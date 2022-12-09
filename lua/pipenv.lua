@@ -18,24 +18,28 @@ M.get_current_venv = function()
 end
 
 M.set_pipenv = function()
-	local cur_path = vim.fn.expand("%:p:h")
-	Job:new({
-		command = "sh",
-		args = { "-c", "cd " .. cur_path .. "; pipenv --venv" },
-		rg = cur_path,
-		on_exit = vim.schedule_wrap(function(job, return_val)
-			if return_val == 0 then
-				local venv_path = job:result()[1]
-				local i, j = string.find(venv_path, "/[^/]+-")
-				local venv_name = string.sub(venv_path, i + 1, j - 1)
-				local venv = {
-					name = venv_name,
-					path = venv_path,
-				}
-				set_venv(venv)
-			end
-		end),
-	}):start()
+	if vim.bo.filetype == "python" then
+		local cur_path = vim.fn.expand("%:p:h")
+		Job:new({
+			command = "sh",
+			args = { "-c", "cd " .. cur_path .. "; pipenv --venv" },
+			rg = cur_path,
+			on_exit = vim.schedule_wrap(function(job, return_val)
+				if return_val == 0 then
+					local venv_path = job:result()[1]
+					local i, j = string.find(venv_path, "/[^/]+-")
+					local venv_name = string.sub(venv_path, i + 1, j - 1)
+					local venv = {
+						name = venv_name,
+						path = venv_path,
+					}
+					set_venv(venv)
+				end
+			end),
+		}):start()
+	else
+		current_venv = nil
+	end
 end
 
 return M
