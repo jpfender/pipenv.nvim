@@ -14,9 +14,13 @@ function M:init(options)
 end
 
 function M:update_status()
-	local venv = require("pipenv").get_current_venv()
-	if venv then
-		return string.format("%s %s", highlight.component_format_highlight(self.color), venv.name)
+	if vim.bo.filetype == "python" then
+		local venv = require("pipenv").get_current_venv()
+		if venv then
+			return string.format("%s %s", highlight.component_format_highlight(self.color), venv.name)
+		else
+			return ""
+		end
 	else
 		return ""
 	end
