@@ -48,5 +48,5 @@ lualine_x = { { "pipenv", icon = "" }, "encoding", "fileformat", "filetype" }
 
 ## Requirements
 
-- [`plenary`](https://github.com/nvim-lua/plenary.nvim)
+- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
 - [pipenv](https://pipenv.pypa.io/en/latest/) if you want this plugin to do anything useful ;)
