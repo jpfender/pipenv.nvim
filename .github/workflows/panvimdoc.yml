@@ -1,0 +1,27 @@
+name: panvimdoc
+
+on: [push]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    name: pandoc to vimdoc
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate docs with panvimdoc
+        uses: kdheepak/panvimdoc@main
+        with:
+          vimdoc: pipenv
+          description: tiny neovim plugin for automatically switching to the correct pipenv for the open buffer
+          # the following are defaults on github actions
+          # description: ""
+          # pandoc: "README.md"
+          # toc: true
+          # version: "NVIM v0.5.0"
+          # demojify: false
+      - name: Push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_user_name: github-actions[bot]
+          commit_message: "Auto generate docs"
+          branch: ${{ github.head_ref }}
